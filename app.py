@@ -105,14 +105,14 @@ class GuidHandler(RequestHandler):
 
   # Edit a table entry
   def post(self, guid=None):
-   if guid is None or guid == '':
-      self.set_status(400)
-      return
-   else:
-       if not is_valid_guid(guid):
-          self.set_status(400)
-          return
-   data = json.load(self.request.body)
+    if guid is None or guid == '':
+        self.set_status(400)
+        return
+    else:
+        if not is_valid_guid(guid):
+            self.set_status(400)
+            return
+    data = json.load(self.request.body)
 
 
 
@@ -150,21 +150,21 @@ class GuidHandler(RequestHandler):
 ### DELETE CALLS ###
 
 # Delete entry given a guid
-def delete(self, guid=None):
-  if guid is None or guid == '':
-      self.set_status(400)
-      return
-  else:
-      if not is_valid_guid(guid):
+  def delete(self, guid=None):
+    if guid is None or guid == '':
         self.set_status(400)
         return
-  
-  # Deletes the entry
-  with self.db.cursor() as cursor:
-     query = "DELETE FROM guids WHERE guid=?"
-     cursor.execute(query, (guid))
-  self.db.commit()
-  self.set_status(200)
+    else:
+        if not is_valid_guid(guid):
+          self.set_status(400)
+          return
+    
+    # Deletes the entry
+    with self.db.cursor() as cursor:
+      query = "DELETE FROM guids WHERE guid=?"
+      cursor.execute(query, (guid))
+    self.db.commit()
+    self.set_status(200)
 
 
 
@@ -172,33 +172,33 @@ def delete(self, guid=None):
 
 # Validates that a given guid is a len of 32, uppercase, and alphanumeric
 def is_valid_guid(guid):
-    pattern = re.compile("^[A-F0-9]{32}$")
-    return bool(pattern.match(guid))
+  pattern = re.compile("^[A-F0-9]{32}$")
+  return bool(pattern.match(guid))
 
 # Validate that a given timestamp is in Unix Time
 def is_valid_unix_time(timestamp):
-   try:
-        time.gmtime(timestamp)
-        return True
-   except ValueError:
-        return False
+  try:
+      time.gmtime(timestamp)
+      return True
+  except ValueError:
+      return False
 
 # Return unix time 30 days from now as an integer
 def unixtime_30_days_from_now():
-   now = datetime.datetime.now()
-   future_30_days = now + datetime.timedelta(days=30)
-   unix_time = int(time.mktime(future_30_days.timetuple()))
-   return unix_time
+  now = datetime.datetime.now()
+  future_30_days = now + datetime.timedelta(days=30)
+  unix_time = int(time.mktime(future_30_days.timetuple()))
+  return unix_time
 
 
 ### MAIN ###
 
 if __name__ == '__main__':
-   unixtime_30_days_from_now()
-   connection = create_server_connection()
-   #create_database(connection, CREATE_TABLE_QUERY)
-   #connection.commit()
-   app = Application([(r"/guids/?(.*)", GuidHandler, dict(db=connection))])
-   app.listen(8888)
-   IOLoop.current().start()
-   #connection.close()
+  unixtime_30_days_from_now()
+  connection = create_server_connection()
+  #create_database(connection, CREATE_TABLE_QUERY)
+  #connection.commit()
+  app = Application([(r"/guids/?(.*)", GuidHandler, dict(db=connection))])
+  app.listen(8888)
+  IOLoop.current().start()
+  #connection.close()
