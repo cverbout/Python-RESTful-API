@@ -9,6 +9,7 @@ redis = "*"
 mysql = "*"
 "mysql.connector" = "*"
 pyodbc = "*"
+schema = "*"
 
 [dev-packages]
 
