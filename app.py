@@ -24,8 +24,7 @@ CREATE TABLE guids (
     )
 """
 
-# GuidHandler contains POST, GET, and DELETE functionality for the guids table in the Python-APi
-
+# GuidHandler contains POST, GET, and DELETE functionality for the guids table in the Python-APi MySQL database hosted on Azure
 
 class GuidHandler(RequestHandler):
 
